@@ -6,8 +6,16 @@
         <meta name="viewport" content="initial-scale=1, width=device-width">
         <title>Neko Clinic</title>
     </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Images</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        {% block body %} {% endblock %}
+    </body>
 </html>
 
-<body>
-    {% block %} {% endblock %}
-</body>
