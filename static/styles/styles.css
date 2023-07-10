@@ -1,10 +1,49 @@
-.header {
-    padding: 20px;
-    text-align: center;
+* {
+    font-family: Tahoma, sans-serif;
 }
 
 .scaling {
-    height: 600px;
+    height: auto;
     width: 100%;
 }
 
+.navbar {
+    position: absolute;
+    top: 0;
+    background-color: transparent;
+    z-index: 1;
+}
+
+.navbar-brand {
+    color: white;
+    font-size: 50px;
+    margin-top: 0;
+}
+
+.navbar-nav {
+    color: yellowgreen;
+    padding-left: 400px;
+    padding-right: 500px;
+}
+
+.nav-link {
+    margin-left: 10px;
+    margin-right: 20px;
+    font-size: 20px;
+    color: white;
+}
+
+.cation {
+    position: absolute;
+    top: 300px;
+    left: 100px;
+    font-size: 50px;
+    color: #FEFBDD;
+}
+
+.cation2 {
+    position: absolute;
+    top: 400px;
+    left: 100px;
+    font-size: 30px;
+}
