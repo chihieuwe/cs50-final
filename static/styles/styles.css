@@ -5,6 +5,8 @@
 .scaling {
     height: auto;
     width: 100%;
+    filter: brightness(70%);
+    filter: drop-shadow(30%)
 }
 
 .navbar {
@@ -15,8 +17,9 @@
 }
 
 .navbar-brand {
-    color: rgb(201, 75, 63);
+    color: rgb(255, 189, 189); 
     font-size: 50px;
+    font-weight: bold;  
     margin-top: 0;
 }
 
@@ -63,12 +66,19 @@
 }
 
 
-
-#login, #register {
-    float: left;
+.nav-link:hover, .nav-brand:hover {
+    color: lightgray; 
+    text-decoration: none;
 }
 
-.nav-link:hover {
-    color: inherit;
-    text-decoration: none;
+#login {
+    margin-top: 50px;
+    border-radius: 50px;
+    background: rgb(255, 189, 189);
+    background-position: left top;
+}
+
+#logintitle {
+    margin-top: 100px;
+    padding-left: 720px;
 }

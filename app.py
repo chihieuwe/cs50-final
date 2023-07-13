@@ -2,12 +2,13 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 @app.after_request
-def add_header(response):
-    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, proxy-revalidate'
-    response.headers['Pragma'] = 'no-cache'
-    response.headers['Expires'] = '0'
-    response.headers['Surrogate-Control'] = 'no-store'
+def after_request(response):
+    """Ensure responses aren't cached"""
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
     return response
+
 
 @app.route("/")
 def index():
@@ -17,3 +18,12 @@ def index():
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
