@@ -1,5 +1,5 @@
 from flask import Flask, render_template 
-
+from cs50 import SQL
 app = Flask(__name__)
 @app.after_request
 def after_request(response):
@@ -8,6 +8,7 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
+db = SQL("sqlite:///pet.db")
 
 
 @app.route("/")
@@ -24,6 +25,6 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
     return render_template("register.html")

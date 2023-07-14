@@ -72,13 +72,14 @@
 }
 
 #login {
-    margin-top: 50px;
-    border-radius: 50px;
+    margin-top: 60px;
+    border-radius: 15px 15px 15px 15px;
+    border-width: 5px;
     background: rgb(255, 189, 189);
-    background-position: left top;
+    padding: 50px;
 }
 
-#logintitle {
-    margin-top: 100px;
-    padding-left: 720px;
+main {
+    margin-top: 70px;
 }
+
