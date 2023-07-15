@@ -8,11 +8,21 @@
     filter: brightness(70%);
     filter: drop-shadow(30%)
 }
-
 .navbar {
     position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     background-color: transparent;
+    z-index: 1;
+}
+
+.navbar-alt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #FFC0CB;
     z-index: 1;
 }
 
@@ -23,8 +33,14 @@
     margin-top: 0;
 }
 
+.navbar-brand-alt {
+    color: black; 
+    font-size: 50px;
+    font-weight: bold;  
+    margin-top: 0;
+}
 .navbar-nav {
-    padding-left: 300px;
+    margin-left: 300px;
 }
 
 .nav-link {
@@ -35,12 +51,29 @@
     text-shadow: 2px 2px 4px rgba(150, 111, 51, 0.5);
 }
 
+.nav-link-alt {
+    margin-left: 10px;
+    margin-right: 20px;
+    font-size: 20px;
+    color: black; 
+    text-shadow: 2px 2px 4px rgba(150, 111, 51, 0.5);
+}
+
+.scrolled .nav-link  {
+    color: black;
+}
+
+.scrolled .navbar-brand {
+    color: black;
+}
+
 #cation {
     position: absolute;
     top: 300px;
     left: 100px;
     color: #FEFBDD;
     word-wrap: break-word;
+    width: auto;
 }
 
 #cation2 {
@@ -53,7 +86,7 @@
 #cat2 {
     float: right;
     margin-top: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     margin-right: 200px;
     height: 500px;
     width: auto;
@@ -61,12 +94,12 @@
 
 
 #description {
-    padding: 300px;
+    padding: 200px;
     word-wrap: break-word;
 }
 
 
-.nav-link:hover, .nav-brand:hover {
+.nav-link:hover, .navbar-brand:hover {
     color: lightgray; 
     text-decoration: none;
 }
@@ -83,3 +116,12 @@ main {
     margin-top: 70px;
 }
 
+footer {
+    background-color: lightgray;
+    height: auto;
+    width: 100%;
+    text-align: center;
+    padding: 3px;
+    left: 0;
+    bottom: 0;
+}

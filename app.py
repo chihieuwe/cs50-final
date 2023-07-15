@@ -1,4 +1,4 @@
-from flask import Flask, render_template 
+from flask import Flask, render_template, request 
 from cs50 import SQL
 app = Flask(__name__)
 @app.after_request
@@ -22,9 +22,15 @@ def about():
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    if request.method == "POST":
+        ...
+    else: 
+        return render_template("login.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "POST":
+        ...
+    else:
+        return render_template("register.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
