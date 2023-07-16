@@ -8,6 +8,12 @@
     filter: brightness(70%);
     filter: drop-shadow(30%)
 }
+
+body {
+    position: relative;
+    min-height: 100vh;
+}
+
 .navbar {
     position: fixed;
     top: 0;
@@ -124,4 +130,5 @@ footer {
     padding: 3px;
     left: 0;
     bottom: 0;
+    position: absolute;
 }
