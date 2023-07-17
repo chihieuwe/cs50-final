@@ -46,24 +46,25 @@ body {
     margin-top: 0;
 }
 .navbar-nav {
-    margin-left: 300px;
+    margin-left: 350px;
 }
 
 .nav-link {
-    margin-left: 10px;
-    margin-right: 20px;
+    margin-left: 15px;
+    margin-right: 25px;
     font-size: 20px;
     color: rgb(255, 189, 189); 
     text-shadow: 2px 2px 4px rgba(150, 111, 51, 0.5);
 }
 
 .nav-link-alt {
-    margin-left: 10px;
-    margin-right: 20px;
+    margin-left: 15px;
+    margin-right: 25px;
     font-size: 20px;
     color: black; 
     text-shadow: 2px 2px 4px rgba(150, 111, 51, 0.5);
 }
+
 
 .scrolled .nav-link  {
     color: black;
@@ -75,11 +76,9 @@ body {
 
 #cation {
     position: absolute;
-    top: 300px;
+    bottom: 250px;
     left: 100px;
     color: #FEFBDD;
-    word-wrap: break-word;
-    width: auto;
 }
 
 #cation2 {
@@ -105,17 +104,13 @@ body {
 }
 
 
-.nav-link:hover, .navbar-brand:hover {
-    color: lightgray; 
-    text-decoration: none;
+.nav-link:hover, .navbar-brand:hover, .credential:hover {
+    color: #ffffe0; 
+    text-decoration: underline;
 }
 
-#login {
-    margin-top: 60px;
-    border-radius: 15px 15px 15px 15px;
-    border-width: 5px;
-    background: rgb(255, 189, 189);
-    padding: 50px;
+.container-fluid {
+    position: relative;
 }
 
 main {
@@ -123,7 +118,7 @@ main {
 }
 
 footer {
-    background-color: lightgray;
+    background-color: #eeeeee;
     height: auto;
     width: 100%;
     text-align: center;
@@ -132,3 +127,4 @@ footer {
     bottom: 0;
     position: absolute;
 }
+
