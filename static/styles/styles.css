@@ -128,3 +128,10 @@ footer {
     position: absolute;
 }
 
+
+.flashes {
+    text-decoration: none; 
+    color: red;
+    list-style-type: none;
+    margin-right: 30px;
+}
