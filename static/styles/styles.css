@@ -6,7 +6,8 @@
     height: auto;
     width: 100%;
     filter: brightness(70%);
-    filter: drop-shadow(30%)
+    filter: drop-shadow(30%);
+    position: relative;
 }
 
 body {
@@ -89,17 +90,13 @@ body {
 
 
 #cat2 {
-    float: right;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    margin-right: 200px;
-    height: 500px;
+    height: 600px;
     width: auto;
 }
 
 
 #description {
-    padding: 200px;
+    padding: 100px;
     word-wrap: break-word;
 }
 
@@ -129,9 +126,16 @@ footer {
 }
 
 
-.flashes {
+.alert-success {
+    color: green;
     text-decoration: none; 
-    color: red;
     list-style-type: none;
-    margin-right: 30px;
+    margin-right: 10px;
+}
+  
+.alert-error {
+    color: red;
+    text-decoration: none; 
+    list-style-type: none;
+    margin-right: 10px;
 }
