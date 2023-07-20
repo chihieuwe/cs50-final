@@ -1,5 +1,24 @@
 {% extends "layout.html" %}
 
 {% block main %}
-To be continued
+<h1>Your profile</h1>
+<form action="/profile" method="post" id="login">
+    {% for user in username %}
+    <div class="mb-3">
+        <label for="name">Name</label>
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  name="name" value="{{ user.name }}" type="text">
+    </div>
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  name="email" value="{{ user.email }}" type="text">
+      
+    </div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <input class="form-control mx-auto w-auto"  name="password" value="{{ user.hash }}" type="password">
+    </div>
+    <div class="mb-3">
+        <p>Your cash: {{ user.cash | usd }}</p>
+    </div>
+    {% endfor %}
 {% endblock %}

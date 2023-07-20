@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, session, redirect
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from cs50 import SQL
+from functools import wraps
 app = Flask(__name__)
 
 # Configure session to use filesystem (instead of signed cookies)
@@ -17,8 +18,27 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
+
+# Establish database connection
 db = SQL("sqlite:///pet.db")
 
+def usd(value):
+    return f"${value:,.2f}"
+# Custom filter
+app.jinja_env.filters["usd"] = usd
+
+def login_required(f):
+    """
+    Decorate routes to require login.
+
+    http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route("/")
 def index():
@@ -28,6 +48,17 @@ def index():
 @app.route("/about")
 def about():
     return render_template("about.html")
+
+@app.route("/order")
+@login_required
+def order():
+    return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
+
+@app.route("/profile")
+@login_required
+def profile():
+    username = db.execute("SELECT * FROM users WHERE name = ?", session["username"])
+    return render_template("profile.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', username=username)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -43,8 +74,7 @@ def login():
         else:
             # Query database for username
             rows = db.execute("SELECT * FROM users WHERE email = ?", email)
-            username = db.execute("SELECT name FROM users WHERE email = ?", email)
-            username1 = username[0]["name"]
+
             # Ensure username exists and password is correct
             if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
                 flash("Login failed", "error")
@@ -52,9 +82,11 @@ def login():
 
             # Remember which user has logged in
             session["user_id"] = rows[0]["id"]
+            session["username"] = rows[0]["name"]
+            session["email"] = rows[0]["email"]
 
             # Redirect user to home page
-            return render_template("index.html", username1='username')
+            return render_template("index.html")
     else: 
         return render_template("login.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
 

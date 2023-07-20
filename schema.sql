@@ -6,3 +6,14 @@ CREATE TABLE users (
     cash NUMERIC NOT NULL DEFAULT 100.00
 );
 CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE service (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL,
+    price NUMERIC NOT NULL
+);
+CREATE TABLE orders (
+    order_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    type TEXT, 
+    user_id INTEGER,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
