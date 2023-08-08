@@ -52,7 +52,9 @@ def about():
 @app.route("/order")
 @login_required
 def order():
-    return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
+    service = db.execute("SELECT name, price FROM service")
+    print(service)
+    return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
 @app.route("/profile")
 @login_required
@@ -97,11 +99,13 @@ def logout():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    # Get info from the form
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
         password = request.form.get("confirmation")
         checkmail = db.execute("SELECT * FROM users WHERE email = ?", email)
+        # Validate the info
         if not name:
             flash("Name cannot be blank", "error")
             return redirect("/register")
@@ -111,7 +115,7 @@ def register():
         if not password:
             flash("Password cannot be blank", "error")
             return redirect("/register")
-        if '@' not in email or email.isnumeric == True:
+        if '@' not in email or email.isnumeric() == True:
             flash("Email not valid", "error")
             return redirect("/register")
         if checkmail:

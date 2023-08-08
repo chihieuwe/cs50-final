@@ -1,5 +1,24 @@
 {% extends "layout.html" %}
 
 {% block main %}
-
+<h1>Make an appointment</h1>
+<form action="/order" method="post">
+    <div class="mb-3">
+        <label for="petname" class="form-label">Pet name</label>
+        <input id="petname" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="symbol" type="text">
+    </div>
+    <div class="mb-3">
+        <label for="petage" class="form-label">Pet age</label>
+        <input id="petage" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="symbol" type="text">
+    </div>
+    <label for="service">Choose a service:</label>
+    {% for ser in service %}
+    <select name="service">
+        <option value="{{ ser }}">{{ ser.name }}</option>
+    </select>
+    <h5>Price:</h5>
+        <p value="{{ ser }}">{{ ser.price | usd }}</p>
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">Book</button>
+</form>
 {% endblock %}
