@@ -56,6 +56,12 @@ def order():
     print(service)
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
+@app.route("/history")
+@login_required
+def history():
+    return render_template("history.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
+
+
 @app.route("/profile")
 @login_required
 def profile():
