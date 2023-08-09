@@ -2,23 +2,31 @@
 
 {% block main %}
 <h1>Make an appointment</h1>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
 <form action="/order" method="post">
     <div class="mb-3">
         <label for="petname" class="form-label">Pet name</label>
-        <input id="petname" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="symbol" type="text">
+        <input id="petname" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petname" type="text">
     </div>
     <div class="mb-3">
         <label for="petage" class="form-label">Pet age</label>
-        <input id="petage" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="symbol" type="text">
+        <input id="petage" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petage" type="text">
     </div>
     <label for="service">Choose a service:</label>
     {% for ser in service %}
     <select name="service">
+        <option value="choose" disabled selected>Select a service</option>
         <option value="{{ ser }}">{{ ser.name }}</option>
     </select>
     <h5>Price:</h5>
         <p value="{{ ser }}">{{ ser.price | usd }}</p>
     {% endfor %}
+    <h5>Image: (Optional)</h5>
+    <input type="file" name="file">
     <button class="btn btn-primary" type="submit">Book</button>
 </form>
 {% endblock %}

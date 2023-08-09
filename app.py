@@ -3,6 +3,7 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from cs50 import SQL
 from functools import wraps
+import os
 app = Flask(__name__)
 
 # Configure session to use filesystem (instead of signed cookies)
@@ -49,11 +50,27 @@ def index():
 def about():
     return render_template("about.html")
 
-@app.route("/order")
+@app.route("/order", methods=["GET", "POST"])
 @login_required
 def order():
     service = db.execute("SELECT name, price FROM service")
     print(service)
+    if request.method == "POST":
+        # Get info from the form
+        petname = request.form.get("petname")
+        petage = request.form.get("petage")
+        if not petname:
+            flash("Pet name cannot be empty!", "error")
+            return redirect("/order")
+        if not petage:
+            flash("Pet age cannot be empty!", "error")
+            return redirect("/order")
+        uploaded_file = request.files['file']  # 'file' is the name of the file input in the form
+        if uploaded_file:
+            # Save the uploaded file to a specific location
+            uploaded_file.save('templates/' + uploaded_file.filename)
+            flash('File uploaded successfully!')
+            return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
 @app.route("/history")

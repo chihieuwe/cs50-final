@@ -6,16 +6,16 @@
     {% for user in username %}
     <div class="mb-3">
         <label for="name">Name</label>
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  name="name" value="{{ user.name }}" type="text">
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  name="name" value="{{ user.name }}" type="text" disabled>
     </div>
     <div class="mb-3">
         <label for="email">Email</label>
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  name="email" value="{{ user.email }}" type="text">
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  name="email" value="{{ user.email }}" type="text" disabled>
       
     </div>
     <div class="mb-3">
         <label for="password">Password</label>
-        <input class="form-control mx-auto w-auto"  name="password" value="{{ user.hash }}" type="password">
+        <input class="form-control mx-auto w-auto"  name="password" value="{{ user.hash }}" type="password" disabled>
     </div>
     <div class="mb-3">
         <p>Your cash: {{ user.cash | usd }}</p>
