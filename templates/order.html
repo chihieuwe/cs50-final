@@ -17,9 +17,10 @@
         <input id="petage" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petage" type="text">
     </div>
     <label for="service">Choose a service:</label>
-    {% for ser in service %}
+   
     <select name="service">
         <option value="choose" disabled selected>Select a service</option>
+        {% for ser in service %}
         <option value="{{ ser }}">{{ ser.name }}</option>
     </select>
     <h5>Price:</h5>
