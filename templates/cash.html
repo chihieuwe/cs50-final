@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="container">
+    <h1 class="mt-5">Checkout Form</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+  {% endwith %}
+    <form action="/cash" method="POST">
+            <div class="mb-3">
+                <label for="cash" class="form-label">Specify amount:</label>
+                <input type="text" class="form-control" id="cash" name="cash" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -62,15 +62,19 @@ def order():
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect("/order")
-        if not petage:
+        elif not petage:
             flash("Pet age cannot be empty!", "error")
             return redirect("/order")
-        uploaded_file = request.files['file']  # 'file' is the name of the file input in the form
-        if uploaded_file:
-            # Save the uploaded file to a specific location
-            uploaded_file.save('templates/' + uploaded_file.filename)
-            flash('File uploaded successfully!')
+        elif petage.isnumeric() == False or int(petage) < 0:
+            flash("Pet age must be greater than 0 and a number", "error")
             return redirect("/order")
+        else:
+            uploaded_file = request.files['file']  # 'file' is the name of the file input in the form
+            if uploaded_file:
+            # Save the uploaded file to a specific location
+                uploaded_file.save('cs50/cs50-final/static/images' + uploaded_file.filename)
+                flash('File uploaded successfully!')
+                return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
 @app.route("/history")
@@ -82,8 +86,20 @@ def history():
 @app.route("/profile")
 @login_required
 def profile():
-    username = db.execute("SELECT * FROM users WHERE name = ?", session["username"])
+    username = db.execute("SELECT * FROM users WHERE name = ? AND id = ?", session["username"], session["user_id"])
     return render_template("profile.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', username=username)
+
+@app.route("/cash", methods=["GET", "POST"])
+@login_required
+def cash():
+    if request.method == "POST":
+        cash = request.form.get("cash")
+        if not cash:
+            flash("Amount cannot be empty!", "error")
+            return redirect("/cash")
+        cash = db.execute("SELECT cash FROM uesrs WHERE id = ?", session["user_id"])
+    return render_template("cash.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

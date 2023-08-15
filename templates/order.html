@@ -19,12 +19,12 @@
     <label for="service">Choose a service:</label>
    
     <select name="service">
-        <option value="choose" disabled selected>Select a service</option>
+        <option value="choose" selected>Select a service</option>
         {% for ser in service %}
         <option value="{{ ser }}">{{ ser.name }}</option>
+        <p>Price: {{ ser.price | usd }}</p>
     </select>
-    <h5>Price:</h5>
-        <p value="{{ ser }}">{{ ser.price | usd }}</p>
+        <p>Price: {{ ser.price | usd }}</p>
     {% endfor %}
     <h5>Image: (Optional)</h5>
     <input type="file" name="file">
