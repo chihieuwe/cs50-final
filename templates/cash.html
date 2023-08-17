@@ -3,7 +3,7 @@
 {% block main %}
 
 <div class="container">
-    <h1 class="mt-5">Checkout Form</h1>
+    <h1 class="mt-5">Add more cash to your account</h1>
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% for category, message in messages %}
       <div class="alert alert-{{ category }}">{{ message }}</div>
@@ -12,7 +12,7 @@
     <form action="/cash" method="POST">
             <div class="mb-3">
                 <label for="cash" class="form-label">Specify amount:</label>
-                <input type="text" class="form-control" id="cash" name="cash" required>
+                <input type="number" class="form-control" id="cash" name="cash" required>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">Add</button>

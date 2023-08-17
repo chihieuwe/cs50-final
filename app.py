@@ -94,11 +94,21 @@ def profile():
 def cash():
     if request.method == "POST":
         cash = request.form.get("cash")
+        cash_current = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
+        cash_current = cash_current[0]["cash"]
         if not cash:
             flash("Amount cannot be empty!", "error")
             return redirect("/cash")
-        cash = db.execute("SELECT cash FROM uesrs WHERE id = ?", session["user_id"])
-    return render_template("cash.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
+        elif int(cash) < 1:
+            flash("Amount must be at least $1", "error")
+            return redirect("/cash")
+        else:
+            cash = int(cash) + cash_current
+            db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
+            flash("Cash added succesfully", "success")
+            return redirect("/cash")
+    else:
+        return render_template("cash.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -131,6 +141,7 @@ def login():
     else: 
         return render_template("login.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
 
+# Logging users out
 @app.route("/logout")
 def logout():
     session.clear()
