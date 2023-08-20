@@ -12,3 +12,5 @@ Languages used:
 * Flask - a microframework for web written in Python https://flask.palletsprojects.com/en/2.3.x/
 * SQLite3 - For database 
 
+
+More work in progress... 
