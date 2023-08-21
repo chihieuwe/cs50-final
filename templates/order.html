@@ -18,14 +18,13 @@
     </div>
     <label for="service">Choose a service:</label>
    
-    <select name="service">
-        <option value="choose" selected>Select a service</option>
+    <select id="service" name="service">
+        <option value="choose" selected disabled>Select a service</option>
         {% for ser in service %}
-        <option value="{{ ser }}">{{ ser.name }}</option>
-        <p>Price: {{ ser.price | usd }}</p>
+        <option value="{{ ser }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
+        {% endfor %}
     </select>
-        <p>Price: {{ ser.price | usd }}</p>
-    {% endfor %}
+    <p id="price"></p>
     <h5>Image: (Optional)</h5>
     <input type="file" name="file">
     <button class="btn btn-primary" type="submit">Book</button>

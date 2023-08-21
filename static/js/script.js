@@ -24,4 +24,13 @@ $(document).ready(function(){
             }
         }
     });
+    $('#service').change(function() {
+        var price = $(this).find(':selected').data('price');
+        if (price) {
+            $('#price').text('Price: ' + price);
+        } else {
+            $('#price').text('');
+        }
+    });
 });
+

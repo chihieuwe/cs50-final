@@ -54,7 +54,6 @@ def about():
 @login_required
 def order():
     service = db.execute("SELECT name, price FROM service")
-    print(service)
     if request.method == "POST":
         # Get info from the form
         petname = request.form.get("petname")
@@ -70,11 +69,15 @@ def order():
             return redirect("/order")
         else:
             uploaded_file = request.files['file']  # 'file' is the name of the file input in the form
-            if uploaded_file:
-            # Save the uploaded file to a specific location
-                uploaded_file.save('cs50/cs50-final/static/images' + uploaded_file.filename)
-                flash('File uploaded successfully!')
-                return redirect("/order")
+            if uploaded_file.filename != '':
+                if uploaded_file.filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                    uploaded_file.save('cs50/cs50-final/static/images/' + uploaded_file.filename)
+                    db.execute("INSERT INTO orders (service_name, user_id, image_path) VALUES (?, ?, ?)", 'cs50/cs50-final/static/images/' + uploaded_file.filename)
+                else:
+                    flash('Invalid file type! Please upload an image file.')
+                    return redirect("/order")   
+            else:
+                ...
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
 @app.route("/history")
