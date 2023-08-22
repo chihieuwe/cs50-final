@@ -7,7 +7,7 @@
     <div class="alert alert-{{ category }}">{{ message }}</div>
   {% endfor %}
 {% endwith %}
-<form action="/order" method="post">
+<form action="/order" method="post" enctype="multipart/form-data">
     <div class="mb-3">
         <label for="petname" class="form-label">Pet name</label>
         <input id="petname" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petname" type="text">

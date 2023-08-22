@@ -58,6 +58,7 @@ def order():
         # Get info from the form
         petname = request.form.get("petname")
         petage = request.form.get("petage")
+        service_type = request.form.get("service")
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect("/order")
@@ -68,16 +69,31 @@ def order():
             flash("Pet age must be greater than 0 and a number", "error")
             return redirect("/order")
         else:
-            uploaded_file = request.files['file']  # 'file' is the name of the file input in the form
+            uploaded_file = request.files.get("file")
             if uploaded_file.filename != '':
-                if uploaded_file.filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
-                    uploaded_file.save('cs50/cs50-final/static/images/' + uploaded_file.filename)
-                    db.execute("INSERT INTO orders (service_name, user_id, image_path) VALUES (?, ?, ?)", 'cs50/cs50-final/static/images/' + uploaded_file.filename)
+                if uploaded_file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+        
+        # Use os.path.join() to create the directory path
+                    directory = os.path.join('cs50-final', 'static', 'images', 'user_img')
+        
+                    if not os.path.exists(directory):
+                        os.makedirs(directory)
+        
+        # Use os.path.join() to create the file path
+                    file_path = os.path.join(directory, uploaded_file.filename)
+        
+                    uploaded_file.save(file_path)
+                    flash("Successful", "success")
+                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'cs50-final/static/images/user_img/' + uploaded_file.filename)
+                    
+                    return redirect("/order")
                 else:
-                    flash('Invalid file type! Please upload an image file.')
+                    flash('Invalid file type! Please upload an image file', "error")
                     return redirect("/order")   
             else:
-                ...
+                flash("Successful", "success")
+                db.execute("INSERT INTO orders (name, age, service, user_id) VALUES (?, ?, ?, ?)", petname, petage, service_type, session["user_id"])
+                return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
 @app.route("/history")
