@@ -21,7 +21,7 @@
     <select id="service" name="service">
         <option value="choose" selected disabled>Select a service</option>
         {% for ser in service %}
-        <option value="{{ ser }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
+            <option value="{{ ser }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
         {% endfor %}
     </select>
     <p id="price"></p>

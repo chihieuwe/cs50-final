@@ -59,6 +59,8 @@ def order():
         petname = request.form.get("petname")
         petage = request.form.get("petage")
         service_type = request.form.get("service")
+        service_name = service_type["name"]
+        print(service_type)
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect("/order")
@@ -74,7 +76,7 @@ def order():
                 if uploaded_file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
         
         # Use os.path.join() to create the directory path
-                    directory = os.path.join('cs50-final', 'static', 'images', 'user_img')
+                    directory = os.path.join('static', 'images', 'user_img')
         
                     if not os.path.exists(directory):
                         os.makedirs(directory)
@@ -84,7 +86,7 @@ def order():
         
                     uploaded_file.save(file_path)
                     flash("Successful", "success")
-                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'cs50-final/static/images/user_img/' + uploaded_file.filename)
+                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_name, session["user_id"], 'static/images/user_img/' + uploaded_file.filename)
                     
                     return redirect("/order")
                 else:
@@ -92,13 +94,15 @@ def order():
                     return redirect("/order")   
             else:
                 flash("Successful", "success")
-                db.execute("INSERT INTO orders (name, age, service, user_id) VALUES (?, ?, ?, ?)", petname, petage, service_type, session["user_id"])
+                db.execute("INSERT INTO orders (name, age, service, user_id) VALUES (?, ?, ?, ?)", petname, petage, service_name, session["user_id"])
                 return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
 @app.route("/history")
 @login_required
 def history():
+    orders = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
+    print(orders)
     return render_template("history.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
 
 

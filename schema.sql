@@ -12,8 +12,11 @@ CREATE TABLE service (
     price NUMERIC NOT NULL
 );
 CREATE TABLE orders (
-    order_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    type TEXT, 
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     user_id INTEGER,
+    image_path TEXT,
+    service TEXT,
+    name TEXT,
+    age TEXT,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
