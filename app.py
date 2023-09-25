@@ -59,7 +59,6 @@ def order():
         petname = request.form.get("petname")
         petage = request.form.get("petage")
         service_type = request.form.get("service")
-        service_name = service_type["name"]
         print(service_type)
         if not petname:
             flash("Pet name cannot be empty!", "error")
@@ -86,7 +85,7 @@ def order():
         
                     uploaded_file.save(file_path)
                     flash("Successful", "success")
-                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_name, session["user_id"], 'static/images/user_img/' + uploaded_file.filename)
+                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'static/images/user_img/' + uploaded_file.filename)
                     
                     return redirect("/order")
                 else:
@@ -94,7 +93,7 @@ def order():
                     return redirect("/order")   
             else:
                 flash("Successful", "success")
-                db.execute("INSERT INTO orders (name, age, service, user_id) VALUES (?, ?, ?, ?)", petname, petage, service_name, session["user_id"])
+                db.execute("INSERT INTO orders (name, age, service, user_id, status) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 1)
                 return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
