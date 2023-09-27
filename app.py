@@ -102,7 +102,7 @@ def order():
 def history():
     orders = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
     print(orders)
-    return render_template("history.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt')
+    return render_template("history.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', orders=orders)
 
 
 @app.route("/profile")
