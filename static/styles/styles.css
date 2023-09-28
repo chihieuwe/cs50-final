@@ -147,3 +147,13 @@ footer {
     list-style-type: none;
 }
 
+/* Styling for table */ 
+
+table, th, td {
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    border: 1px solid black;
+    margin-top: auto;
+    margin-bottom: auto;
+}

@@ -93,7 +93,7 @@ def order():
                     return redirect("/order")   
             else:
                 flash("Successful", "success")
-                db.execute("INSERT INTO orders (name, age, service, user_id, status) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 1)
+                db.execute("INSERT INTO orders (name, age, service, user_id, order_status) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 1)
                 return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 

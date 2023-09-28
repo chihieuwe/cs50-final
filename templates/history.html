@@ -7,8 +7,8 @@
         <tr>
             <th>Service</th>
             <th>Pet name</th>
-            <th>Price</th>
-            <th>Total</th>
+            <th>User ID</th>
+            <th>Service</th>
         </tr>
     </thead>
     <tbody>
@@ -18,7 +18,7 @@
             <td>{{ order.id }}</td>
             <td>{{ order.name }}</td>
             <td>{{ order.user_id }}</td>
-            <td><img src="{{ url_for('static', filename=order.static/images/user_img/cat.jpg) }}" alt="Image"></td>
+            <td>{{ order.service }}</td>
             <td>{{ order.id }}</td>
 
         </tr>
