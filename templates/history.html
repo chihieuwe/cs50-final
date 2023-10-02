@@ -9,6 +9,7 @@
             <th>Pet name</th>
             <th>User ID</th>
             <th>Service</th>
+            <th>Image</th>
         </tr>
     </thead>
     <tbody>
@@ -20,7 +21,9 @@
             <td>{{ order.user_id }}</td>
             <td>{{ order.service }}</td>
             <td>{{ order.id }}</td>
-
+            {% if order.image_path %}
+            <td><img src="{{ url_for('static', filename=order.image_path) }}" alt="Image" width="50" height="50"></td>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

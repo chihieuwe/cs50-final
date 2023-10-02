@@ -85,7 +85,7 @@ def order():
         
                     uploaded_file.save(file_path)
                     flash("Successful", "success")
-                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'static/images/user_img/' + uploaded_file.filename)
+                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'images/user_img/' + uploaded_file.filename)
                     
                     return redirect("/order")
                 else:
