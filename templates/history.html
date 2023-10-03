@@ -5,7 +5,7 @@
 <table>
     <thead>
         <tr>
-            <th>Service</th>
+            <th>Order ID</th>
             <th>Pet name</th>
             <th>User ID</th>
             <th>Service</th>
@@ -20,7 +20,6 @@
             <td>{{ order.name }}</td>
             <td>{{ order.user_id }}</td>
             <td>{{ order.service }}</td>
-            <td>{{ order.id }}</td>
             {% if order.image_path %}
             <td><img src="{{ url_for('static', filename=order.image_path) }}" alt="Image" width="50" height="50"></td>
             {% endif %}
