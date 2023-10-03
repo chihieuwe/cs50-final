@@ -13,4 +13,10 @@ Languages used:
 * SQLite3 - For database 
 
 
-More work in progress... 
+The website was implemented by using what was learned in 'Finance' problem set in cs50. 
+
+*How to use:* 
+
+* Go to register page and create an account. 
+* Login using that account. 
+* To be continued...
