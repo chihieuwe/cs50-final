@@ -2,7 +2,7 @@
 This is CS50 
 Neko Pet Clinic, a website for vet reservation for your pet.
 
-The intended purpose of this website is for reservation, which means you can access the web and reserve one while also looking for additional information regarding your pet's health. It is useful to have a website to find the information you need regarding of going to the vet. 
+The intended purpose of this website is for reservation, which means you can access the web and reserve one while also looking for additional options regarding your pet's health and well-being. It is useful to have a website to find the information you need regarding of going to the vet. 
 
 Languages used:
 * HTML
@@ -19,4 +19,7 @@ The website was implemented by using what was learned in 'Finance' problem set i
 
 * Go to register page and create an account. 
 * Login using that account. 
-* To be continued...
+* Click *order* on the navbar. 
+* Fill in information about your pet. 
+* Click *Book*.
+* *To be continued...*
