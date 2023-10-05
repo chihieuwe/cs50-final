@@ -28,7 +28,6 @@ $(document).ready(function(){
         var price = $(this).find(':selected').data('price');
         if (price) {
             $('#price').text('Price: ' + price);
-            $('#hiddenPrice').val(price);
         } else {
             $('#price').text('');
         }

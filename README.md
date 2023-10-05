@@ -13,7 +13,7 @@ Languages used:
 * SQLite3 - For database 
 
 
-The website was implemented by using what was learned in 'Finance' problem set in cs50: form validation, app route, interacting with database using SQLite
+The website was implemented by using what was learned in 'Finance' problem set in cs50. 
 
 *How to use:* 
 
