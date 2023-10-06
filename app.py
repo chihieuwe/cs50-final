@@ -54,12 +54,20 @@ def about():
 @login_required
 def order():
     service = db.execute("SELECT name, price FROM service")
+    cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
+    cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
     if request.method == "POST":
         # Get info from the form
         petname = request.form.get("petname")
         petage = request.form.get("petage")
         service_type = request.form.get("service")
-        print(service_type)
+        service_price = request.form.get("price")
+
+        # Remove the $ sign for the service price & convert the price to int
+        if service_price:
+            service_price = service_price.replace("$", "")
+            service_price = float(service_price)
+            
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect("/order")
@@ -68,6 +76,9 @@ def order():
             return redirect("/order")
         elif petage.isnumeric() == False or int(petage) < 0:
             flash("Pet age must be greater than 0 and a number", "error")
+            return redirect("/order")
+        elif cash < service_price:
+            flash("Your balance is not enough, please add more", "error")
             return redirect("/order")
         else:
             uploaded_file = request.files.get("file")
@@ -85,15 +96,24 @@ def order():
         
                     uploaded_file.save(file_path)
                     flash("Successful", "success")
+                    # Update the cash after payment #
+                    cash = cash - service_price
                     db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'images/user_img/' + uploaded_file.filename)
-                    
+                    # Update the cash after payment #
+                    db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                     return redirect("/order")
                 else:
                     flash('Invalid file type! Please upload an image file', "error")
                     return redirect("/order")   
             else:
                 flash("Successful", "success")
+                # Update the cash after payment #
+                cash = cash - service_price
+
                 db.execute("INSERT INTO orders (name, age, service, user_id, order_status) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 1)
+                
+                # Update the cash after payment #
+                db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                 return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
@@ -101,7 +121,6 @@ def order():
 @login_required
 def history():
     orders = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
-    print(orders)
     return render_template("history.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', orders=orders)
 
 
