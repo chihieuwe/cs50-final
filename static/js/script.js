@@ -33,5 +33,15 @@ $(document).ready(function(){
             $('#price').text('');
         }
     });
+    $('.image-modal-trigger').click(function() {
+        // Get the image source from the data attribute
+        let imgSrc = $(this).data('imgsrc');
+        
+        // Set the source for the image in the modal
+        $('#modal-image').attr('src', imgSrc);
+        
+        // Show the modal
+        $('#modal').show();
+    });
 });
 
