@@ -22,4 +22,4 @@ The website was implemented by using what was learned in 'Finance' problem set i
 * Click *order* on the navbar. 
 * Fill in information about your pet. 
 * Click *Book*.
-* *To be continued...*
+* To view your order, go to your profile and click 'order history'. 
