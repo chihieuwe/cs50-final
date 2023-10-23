@@ -20,6 +20,7 @@
    
     <select id="service" name="service">
         <option value="choose" selected disabled>Select a service</option>
+        <!-- Get the service name -->
         {% for ser in service %}
             <option value="{{ ser.name }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
         {% endfor %}

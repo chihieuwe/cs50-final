@@ -125,6 +125,7 @@ footer {
     left: 0;
     bottom: 0;
     position: absolute;
+    z-index: -1;
 }
 
 
@@ -157,6 +158,8 @@ table, th, td {
     margin-top: auto;
     margin-bottom: auto;
 }
+
+/* Styling for image modal display */
 
 #modal {
     position: fixed;

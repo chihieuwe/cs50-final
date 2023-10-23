@@ -43,6 +43,7 @@ def login_required(f):
 
 @app.route("/")
 def index():
+    # Render index page
     return render_template("index.html")
 
 
@@ -91,7 +92,7 @@ def order():
                     if not os.path.exists(directory):
                         os.makedirs(directory)
         
-        # Use os.path.join() to create the file path
+        # Use os.path.join() to create the file path on server
                     file_path = os.path.join(directory, uploaded_file.filename)
         
                     uploaded_file.save(file_path)
@@ -120,6 +121,7 @@ def order():
 @app.route("/history")
 @login_required
 def history():
+    # Get all the order history
     orders = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
     return render_template("history.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', orders=orders)
 
@@ -127,12 +129,14 @@ def history():
 @app.route("/profile")
 @login_required
 def profile():
+    # Query and display user information
     username = db.execute("SELECT * FROM users WHERE name = ? AND id = ?", session["username"], session["user_id"])
     return render_template("profile.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', username=username)
 
 @app.route("/cash", methods=["GET", "POST"])
 @login_required
 def cash():
+    # Top up cash 
     if request.method == "POST":
         cash = request.form.get("cash")
         cash_current = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
@@ -144,6 +148,7 @@ def cash():
             flash("Amount must be at least $1", "error")
             return redirect("/cash")
         else:
+            # Update the current cash amount 
             cash = int(cash) + cash_current
             db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
             flash("Cash added succesfully", "success")

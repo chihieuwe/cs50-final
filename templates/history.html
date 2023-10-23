@@ -19,8 +19,12 @@
             <td>{{ order.id }}</td>
             <td>{{ order.name }}</td>
             <td>{{ order.service }}</td>
+            <!-- Create a cell & modal to display image-->
+            <!-- If the image path exists in order-->
             {% if order.image_path %}
+            <!-- Display the image -->
             <td><div class="image-modal-trigger" data-imgsrc="{{ url_for('static', filename=order.image_path) }}"><img src="{{ url_for('static', filename=order.image_path) }}" alt="Image" width="50" height="50"></div></td>
+            <!-- Display the modal for the image -->
             <div id="modal" style="display: none;">
                 <img id="modal-image" src="{{ url_for('static', filename=order.image_path) }}" alt="Modal Image">
                 <button onclick="$('#modal').hide();">Close</button>
