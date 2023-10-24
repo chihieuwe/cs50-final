@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 
 {% block main %}
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
 <table>
     <thead>
         <tr>
@@ -29,6 +33,10 @@
                 <img id="modal-image" src="{{ url_for('static', filename=order.image_path) }}" alt="Modal Image">
                 <button onclick="$('#modal').hide();">Close</button>
             </div>
+            <form action="/cancel" method="post">
+                <input type="hidden" name="cancel" value="{{ order.id }}">
+                <td><button type="submit">Cancel appointment</button></td>
+            </form>
             {% endif %}
         </tr>
         {% endfor %}

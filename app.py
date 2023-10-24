@@ -125,6 +125,17 @@ def history():
     orders = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
     return render_template("history.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', orders=orders)
 
+@app.route("/cancel", methods=["GET", "POST"])
+@login_required
+def cancel():
+    # Cancel the order
+    if request.method == "POST":
+        order_id = request.form.get("cancel")
+        flash("Appointment canceled", "success")
+        db.execute("DELETE FROM orders WHERE id = ? AND user_id = ?", order_id, session["user_id"])
+        return redirect("/history")
+    else:
+        return redirect("/history")
 
 @app.route("/profile")
 @login_required

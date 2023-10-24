@@ -15,6 +15,13 @@ Languages and resources used:
 
 The website was implemented by using what was learned in 'Finance' problem set in cs50: form validation, app route, interacting with database using SQLite. 
 
+
+Install locally: 
+1. Install WSL & Ubuntu. 
+2. Install Git. 
+3. To be continued... 
+
+
 *How to use:* 
 
 * Go to register page and create an account. 
