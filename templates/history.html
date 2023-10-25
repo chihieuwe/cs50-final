@@ -35,6 +35,7 @@
             </div>
             <form action="/cancel" method="post">
                 <input type="hidden" name="cancel" value="{{ order.id }}">
+                <input type="hidden" name="service" value="{{ order.service }}">
                 <td><button type="submit">Cancel appointment</button></td>
             </form>
             {% endif %}

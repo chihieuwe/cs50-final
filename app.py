@@ -130,8 +130,18 @@ def history():
 def cancel():
     # Cancel the order
     if request.method == "POST":
+        # Get the order id
         order_id = request.form.get("cancel")
+        # Get the service name
+        service = request.form.get("service")
         flash("Appointment canceled", "success")
+        # Get the service price
+        price = db.execute("SELECT price FROM service WHERE name = ?", service)
+        price = cash[0]["price"]
+        user_cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
+        user_cash = user_cash[0]["cash"]
+        cash_current = price + user_cash
+        db.execute("UPDATE users SET cash = ? WHERE id = ?", cash_current, session["user_id"])
         db.execute("DELETE FROM orders WHERE id = ? AND user_id = ?", order_id, session["user_id"])
         return redirect("/history")
     else:
