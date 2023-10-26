@@ -137,7 +137,7 @@ def cancel():
         flash("Appointment canceled", "success")
         # Get the service price
         price = db.execute("SELECT price FROM service WHERE name = ?", service)
-        price = cash[0]["price"]
+        price = price[0]["price"]
         user_cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
         user_cash = user_cash[0]["cash"]
         cash_current = price + user_cash
