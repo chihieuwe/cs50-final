@@ -118,6 +118,13 @@ def order():
                 return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
+@app.route("/edit", methods=["GET", "POST"])
+@login_required
+def edit():
+    order = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
+    service = db.execute("SELECT name, price FROM service")
+    return render_template("edit.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', order=order, service=service)
+
 @app.route("/history")
 @login_required
 def history():

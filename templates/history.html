@@ -33,6 +33,13 @@
                 <img id="modal-image" src="{{ url_for('static', filename=order.image_path) }}" alt="Modal Image">
                 <button onclick="$('#modal').hide();">Close</button>
             </div>
+
+            <form action="/edit" method="post">
+                <input type="hidden" name="cancel" value="{{ order.id }}">
+                <input type="hidden" name="service" value="{{ order.service }}">
+                <td><button type="submit">Edit appointment</button></td>
+            </form>
+
             <form action="/cancel" method="post">
                 <input type="hidden" name="cancel" value="{{ order.id }}">
                 <input type="hidden" name="service" value="{{ order.service }}">

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<h1>Edit appointment</h1>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
+<form action="/edit" method="post" enctype="multipart/form-data">
+    {% for order in order %}
+    <div class="mb-3">
+        <label for="petname" class="form-label">Pet name</label>
+        <input id="petname" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petname" value="{{ order.name }}" type="text">
+    </div>
+    <div class="mb-3">
+        <label for="petage" class="form-label">Pet age</label>
+        <input id="petage" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petage" value="{{ order.age }}" type="text">
+    </div>
+    
+    <label for="service">Choose a service:</label>
+   
+    <select id="service" name="service">
+        <option value="choose" disabled>Select a service</option>
+        <option value="{{ order.service }}" selected>{{ order.service }}</option>
+        <!-- Get the service name -->
+        {% for ser in service %}
+            <option value="{{ ser.name }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
+        {% endfor %}
+    </select>
+    <p id="price"></p>
+    <input type="hidden" id="hiddenPrice" name="price">
+    <h5>Image: (Optional)</h5>
+    <input type="file" name="file" value="{{ order.image_path }}">
+    <button class="btn btn-primary" type="submit">Edit</button>
+    {% endfor %}
+</form>
+{% endblock %}
