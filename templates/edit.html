@@ -22,10 +22,13 @@
    
     <select id="service" name="service">
         <option value="choose" disabled>Select a service</option>
-        <option value="{{ order.service }}" selected>{{ order.service }}</option>
         <!-- Get the service name -->
         {% for ser in service %}
-            <option value="{{ ser.name }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
+            {% if order.service != ser.name %}
+                <option value="{{ ser.name }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
+            {% else %}
+            <option value="{{ order.service }}" data-price="{{ ser.price | usd }}" selected>{{ order.service }}</option>
+            {% endif %}
         {% endfor %}
     </select>
     <p id="price"></p>
