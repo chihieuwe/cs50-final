@@ -32,7 +32,7 @@ $(document).ready(function(){
         } else {
             $('#price').text('');
         }
-    });
+    }).change(); // Trigger the change event immediately
     $('.image-modal-trigger').click(function() {
         // Get the image source from the data attribute
         let imgSrc = $(this).data('imgsrc');
