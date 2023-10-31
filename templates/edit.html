@@ -33,6 +33,7 @@
     </select>
     <p id="price"></p>
     <input type="hidden" id="hiddenPrice" name="price">
+    <input type="hidden" name="orderID" value="{{ order.id }}">
     <h5>Image: (Optional)</h5>
     <input type="file" name="file" value="{{ order.image_path }}">
     <button class="btn btn-primary" type="submit">Edit</button>

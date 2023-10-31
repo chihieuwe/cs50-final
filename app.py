@@ -99,7 +99,7 @@ def order():
                     flash("Successful", "success")
                     # Update the cash after payment #
                     cash = cash - service_price
-                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'images/user_img/' + uploaded_file.filename)
+                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path, cash_spent) VALUES (?, ?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'images/user_img/' + uploaded_file.filename, service_price)
                     # Update the cash after payment #
                     db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                     return redirect("/order")
@@ -111,7 +111,7 @@ def order():
                 # Update the cash after payment #
                 cash = cash - service_price
 
-                db.execute("INSERT INTO orders (name, age, service, user_id, order_status) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 1)
+                db.execute("INSERT INTO orders (name, age, service, user_id, cash_spent) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], service_price)
                 
                 # Update the cash after payment #
                 db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
@@ -123,6 +123,86 @@ def order():
 def edit():
     order = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
     service = db.execute("SELECT name, price FROM service")
+    cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
+    cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
+    if request.method == "POST":
+        # Get info from the form
+        petname = request.form.get("petname")
+        petage = request.form.get("petage")
+        service_type = request.form.get("service")
+        service_price = request.form.get("price")
+        order_id = request.form.get("orderID")
+        # Remove the $ sign for the service price & convert the price to int
+        if service_price:
+            service_price = service_price.replace("$", "")
+            service_price = float(service_price)
+            
+        if not petname:
+            flash("Pet name cannot be empty!", "error")
+            return redirect("/edit")
+        elif not petage:
+            flash("Pet age cannot be empty!", "error")
+            return redirect("/edit")
+        elif petage.isnumeric() == False or int(petage) < 0:
+            flash("Pet age must be greater than 0 and a number", "error")
+            return redirect("/edit")
+        elif cash < service_price:
+            flash("Your balance is not enough, please add more", "error")
+            return redirect("/edit")
+        else:
+            uploaded_file = request.files.get("file")
+            if uploaded_file.filename != '':
+                if uploaded_file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+        
+        # Use os.path.join() to create the directory path
+                    directory = os.path.join('static', 'images', 'user_img')
+        
+                    if not os.path.exists(directory):
+                        os.makedirs(directory)
+        
+        # Use os.path.join() to create the file path on server
+                    file_path = os.path.join(directory, uploaded_file.filename)
+
+                    uploaded_file.save(file_path)
+                    flash("Successful", "success")
+                    # Update the cash after payment #
+                    cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", order_id)
+                    cash_spent = cash_spent[0]["cash_spent"]
+                    cash_spent = float(cash_spent)
+                    if cash_spent == service_price:
+                        cash_spent = service_price
+                    elif cash_spent > service_price:
+                        cash_spent = cash_spent - service_price
+                        cash = cash + cash_spent
+                    elif cash_spent < service_price:
+                        cash_spent = service_price - cash_spent
+                        cash = cash - cash_spent
+                    db.execute("UPDATE orders SET name = ?, age = ?, service = ?, image_path = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type,'images/user_img/' + uploaded_file.filename, service_price, session["user_id"], order_id)
+                    # Update the cash after payment #
+                    db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
+                    return redirect("/edit")
+                else:
+                    flash('Invalid file type! Please upload an image file', "error")
+                    return redirect("/edit")
+            else:
+                flash("Successful", "success")
+                # Update the cash after payment #
+                cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", order_id)
+                cash_spent = cash_spent[0]["cash_spent"]
+                cash_spent = float(cash_spent)
+                if cash_spent == service_price:
+                    cash_spent = service_price
+                elif cash_spent > service_price:
+                    cash_spent = cash_spent - service_price
+                    cash = cash + cash_spent
+                elif cash_spent < service_price:
+                    cash_spent = service_price - cash_spent
+                    cash = cash - cash_spent
+                db.execute("UPDATE orders SET name = ?, age = ?, service = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type, service_price, session["user_id"], order_id)
+                
+                # Update the cash after payment #
+                db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
+                return redirect("/order")
     return render_template("edit.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', order=order, service=service)
 
 @app.route("/history")
