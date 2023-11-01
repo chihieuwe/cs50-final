@@ -68,7 +68,6 @@ def order():
         if service_price:
             service_price = service_price.replace("$", "")
             service_price = float(service_price)
-            
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect("/order")
@@ -118,10 +117,10 @@ def order():
                 return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
-@app.route("/edit", methods=["GET", "POST"])
+@app.route("/edit/<order_id>", methods=["GET", "POST"])
 @login_required
-def edit():
-    order = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
+def edit(order_id):
+    order = db.execute("SELECT * FROM orders WHERE user_id = ? AND id = ?", session["user_id"], order_id)
     service = db.execute("SELECT name, price FROM service")
     cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
     cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
@@ -132,11 +131,22 @@ def edit():
         service_type = request.form.get("service")
         service_price = request.form.get("price")
         order_id = request.form.get("orderID")
+        cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", order_id)
+        cash_spent = cash_spent[0]["cash_spent"]
+        cash_spent = float(cash_spent)
         # Remove the $ sign for the service price & convert the price to int
         if service_price:
             service_price = service_price.replace("$", "")
             service_price = float(service_price)
-            
+        if cash_spent == service_price:
+            cash_spent = service_price
+        elif cash_spent > service_price:
+            cash_spent = cash_spent - service_price
+            cash = cash + cash_spent
+        elif cash_spent < service_price:
+            cash_spent = service_price - cash_spent
+            cash = cash - cash_spent
+        total_cash = cash_spent + cash    
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect("/edit")
@@ -146,7 +156,7 @@ def edit():
         elif petage.isnumeric() == False or int(petage) < 0:
             flash("Pet age must be greater than 0 and a number", "error")
             return redirect("/edit")
-        elif cash < service_price:
+        elif total_cash < service_price:
             flash("Your balance is not enough, please add more", "error")
             return redirect("/edit")
         else:
@@ -166,17 +176,6 @@ def edit():
                     uploaded_file.save(file_path)
                     flash("Successful", "success")
                     # Update the cash after payment #
-                    cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", order_id)
-                    cash_spent = cash_spent[0]["cash_spent"]
-                    cash_spent = float(cash_spent)
-                    if cash_spent == service_price:
-                        cash_spent = service_price
-                    elif cash_spent > service_price:
-                        cash_spent = cash_spent - service_price
-                        cash = cash + cash_spent
-                    elif cash_spent < service_price:
-                        cash_spent = service_price - cash_spent
-                        cash = cash - cash_spent
                     db.execute("UPDATE orders SET name = ?, age = ?, service = ?, image_path = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type,'images/user_img/' + uploaded_file.filename, service_price, session["user_id"], order_id)
                     # Update the cash after payment #
                     db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
@@ -187,17 +186,6 @@ def edit():
             else:
                 flash("Successful", "success")
                 # Update the cash after payment #
-                cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", order_id)
-                cash_spent = cash_spent[0]["cash_spent"]
-                cash_spent = float(cash_spent)
-                if cash_spent == service_price:
-                    cash_spent = service_price
-                elif cash_spent > service_price:
-                    cash_spent = cash_spent - service_price
-                    cash = cash + cash_spent
-                elif cash_spent < service_price:
-                    cash_spent = service_price - cash_spent
-                    cash = cash - cash_spent
                 db.execute("UPDATE orders SET name = ?, age = ?, service = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type, service_price, session["user_id"], order_id)
                 
                 # Update the cash after payment #
