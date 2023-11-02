@@ -138,6 +138,14 @@ def edit():
         if service_price:
             service_price = service_price.replace("$", "")
             service_price = float(service_price)
+        if cash_spent == service_price:
+            cash_spent = service_price
+        elif cash_spent > service_price:
+            cash_spent = cash_spent - service_price
+            cash = cash + cash_spent
+        elif cash_spent < service_price:
+            cash_spent = service_price - cash_spent
+            cash = cash - cash_spent
         total_cash = cash_spent + cash    
         if not petname:
             flash("Pet name cannot be empty!", "error")
