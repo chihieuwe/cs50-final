@@ -38,7 +38,7 @@
                 {% endif %}
             </td>
             <td>
-                <a href="/edit" class="btn btn-primary">Edit appointment</a>
+                <a href="/edit/{{ order.id }}" class="btn btn-primary">Edit appointment</a>
                 <form action="/cancel" method="post">
                     <input type="hidden" name="cancel" value="{{ order.id }}">
                     <input type="hidden" name="service" value="{{ order.service }}">

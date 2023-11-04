@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from cs50 import SQL
@@ -117,10 +117,10 @@ def order():
                 return redirect("/order")
     return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
 
-@app.route("/edit", methods=["GET", "POST"])
+@app.route("/edit/<int:orderID>", methods=["GET", "POST"])
 @login_required
-def edit():
-    order = db.execute("SELECT * FROM orders WHERE user_id = ?", session["user_id"])
+def edit(orderID):
+    order = db.execute("SELECT * FROM orders WHERE user_id = ? AND id = ?", session["user_id"], orderID)
     service = db.execute("SELECT name, price FROM service")
     cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
     cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
@@ -130,8 +130,7 @@ def edit():
         petage = request.form.get("petage")
         service_type = request.form.get("service")
         service_price = request.form.get("price")
-        order_id = request.form.get("orderID")
-        cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", order_id)
+        cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", orderID)
         cash_spent = cash_spent[0]["cash_spent"]
         cash_spent = float(cash_spent)
         # Remove the $ sign for the service price & convert the price to int
@@ -141,16 +140,16 @@ def edit():
         total_cash = cash_spent + cash    
         if not petname:
             flash("Pet name cannot be empty!", "error")
-            return redirect("/edit")
+            return redirect(url_for('edit', orderID=orderID))
         elif not petage:
             flash("Pet age cannot be empty!", "error")
-            return redirect("/edit")
+            return redirect(url_for('edit', orderID=orderID))
         elif petage.isnumeric() == False or int(petage) < 0:
             flash("Pet age must be greater than 0 and a number", "error")
-            return redirect("/edit")
+            return redirect(url_for('edit', orderID=orderID))
         elif total_cash < service_price:
             flash("Your balance is not enough, please add more", "error")
-            return redirect("/edit")
+            return redirect(url_for('edit', orderID=orderID))
         else:
             uploaded_file = request.files.get("file")
             if uploaded_file.filename != '':
@@ -168,21 +167,21 @@ def edit():
                     uploaded_file.save(file_path)
                     flash("Successful", "success")
                     # Update the cash after payment #
-                    db.execute("UPDATE orders SET name = ?, age = ?, service = ?, image_path = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type,'images/user_img/' + uploaded_file.filename, service_price, session["user_id"], order_id)
+                    db.execute("UPDATE orders SET name = ?, age = ?, service = ?, image_path = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type,'images/user_img/' + uploaded_file.filename, service_price, session["user_id"], orderID)
                     # Update the cash after payment #
                     db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
-                    return redirect("/edit")
+                    return redirect(url_for('edit', orderID=orderID))
                 else:
                     flash('Invalid file type! Please upload an image file', "error")
-                    return redirect("/edit")
+                    return redirect(url_for('edit', orderID=orderID))
             else:
                 flash("Successful", "success")
                 # Update the cash after payment #
-                db.execute("UPDATE orders SET name = ?, age = ?, service = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type, service_price, session["user_id"], order_id)
+                db.execute("UPDATE orders SET name = ?, age = ?, service = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type, service_price, session["user_id"], orderID)
                 
                 # Update the cash after payment #
                 db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
-                return redirect("/order")
+                return redirect(url_for('edit', orderID=orderID))
     return render_template("edit.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', order=order, service=service)
 
 @app.route("/history")

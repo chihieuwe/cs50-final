@@ -7,8 +7,11 @@
     <div class="alert alert-{{ category }}">{{ message }}</div>
   {% endfor %}
 {% endwith %}
-<form action="/edit" method="post" enctype="multipart/form-data">
-    {% for order in order %}
+
+
+  {% for order in order %}
+<form action="/edit/{{ order.id }}" method="post" enctype="multipart/form-data">
+  
     <div class="mb-3">
         <label for="petname" class="form-label">Pet name</label>
         <input id="petname" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petname" value="{{ order.name }}" type="text">
@@ -37,6 +40,6 @@
     <h5>Image: (Optional)</h5>
     <input type="file" name="file" value="{{ order.image_path }}">
     <button class="btn btn-primary" type="submit">Edit</button>
-    {% endfor %}
 </form>
+{% endfor %}
 {% endblock %}
