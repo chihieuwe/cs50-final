@@ -18,6 +18,6 @@ CREATE TABLE orders (
     service TEXT,
     name TEXT,
     age TEXT,
-    order_status INTEGER,
+    cash_spent NUMERIC,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
