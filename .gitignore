@@ -1,0 +1,6 @@
+# Ignore db files
+*.db
+# Ignore build directories
+/__pycache__/
+/flask_session/ 
+static/images/user_img/

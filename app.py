@@ -145,7 +145,7 @@ def edit(orderID):
         elif cash_spent < service_price:
             cash_spent = service_price - cash_spent
             cash = cash - cash_spent
-        total_cash = cash_spent + cash    
+        total_cash = cash_spent + service_price    
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect(url_for('edit', orderID=orderID))

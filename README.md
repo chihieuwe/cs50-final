@@ -19,7 +19,8 @@ The website was implemented by using what was learned in 'Finance' problem set i
 Install locally: 
 1. Install WSL & Ubuntu. 
 2. Install Git. 
-3. To be continued... 
+3. Install VS Code. 
+4. To be continued... 
 
 
 *How to use:* 
