@@ -221,11 +221,36 @@ def cancel():
     else:
         return redirect("/history")
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
     # Query and display user information
-    username = db.execute("SELECT * FROM users WHERE name = ? AND id = ?", session["username"], session["user_id"])
+    username = db.execute("SELECT * FROM users WHERE id = ?", session["user_id"])
+    current_password = username[0]["hash"]
+    if request.method == "POST":
+        name = request.form.get("name")
+        password = request.form.get("password")
+        if not name:
+            flash("Name cannot be blank", "error")
+            return redirect("/profile")
+        if not password:
+            flash("Password cannot be blank", "error")
+            return redirect("/profile")
+        else:
+            if password == current_password:
+                flash("Saved", 'success')
+                db.execute("UPDATE users SET name = ? WHERE id = ?", name, session["user_id"])
+                newName = db.execute("SELECT name FROM users WHERE id = ?", session["user_id"])
+                newName = newName[0]["name"]
+                session["username"] = newName
+                return redirect("/profile")
+            else:
+                flash("Saved", 'success')
+                db.execute("UPDATE users SET name = ?, hash = ?", name, generate_password_hash(password))
+                newName = db.execute("SELECT name FROM users WHERE id = ?", session["user_id"])
+                newName = newName[0]["name"]
+                session["username"] = newName
+                return redirect("/profile")
     return render_template("profile.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', username=username)
 
 @app.route("/cash", methods=["GET", "POST"])
