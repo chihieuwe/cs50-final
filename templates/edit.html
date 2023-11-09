@@ -39,6 +39,9 @@
     <input type="hidden" name="orderID" value="{{ order.id }}">
     <h5>Image: (Optional)</h5>
     <input type="file" name="file" value="{{ order.image_path }}">
+    {% if order.image_path %}
+      <img src="{{ url_for('static', filename=order.image_path) }}" alt="Image" width="50" height="50">
+    {% endif %}
     <button class="btn btn-primary" type="submit">Edit</button>
 </form>
 {% endfor %}
