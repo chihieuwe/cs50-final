@@ -13,6 +13,8 @@
             <th>Order ID</th>
             <th>Pet name</th>
             <th>Service</th>
+            <th>Date</th>
+            <th>Time</th>
             <th>Image</th>
             <th>Actions</th>
         </tr>
@@ -24,6 +26,8 @@
             <td>{{ order.id }}</td>
             <td>{{ order.name }}</td>
             <td>{{ order.service }}</td>
+            <td>{{ order.weekday }}</td>
+            <td>{{ order.hour }}</td>
             <!-- Create a cell & modal to display image-->
             <!-- If the image path exists in order-->
             <td>

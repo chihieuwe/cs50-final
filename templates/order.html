@@ -27,6 +27,31 @@
     </select>
     <p id="price"></p>
     <input type="hidden" id="hiddenPrice" name="price">
+
+
+    <label for="day">Choose a date:</label>
+
+    <select id="day" name="day">
+        <option value="choose" selected disabled>Select a day</option>
+        <!-- Get the service name -->
+        {% for day in weekday %}
+            {% if day.weekday != None %}
+                <option value="{{ day.weekday }}">{{ day.weekday }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    <label for="day">Choose a time:</label>
+
+    <select id="hour" name="hour">
+        <option value="choose" selected disabled>Select a time</option>
+        <!-- Get the service name -->
+        {% for hour in hour %}
+            {% if hour.hour != None %}
+                <option value="{{ hour.hour }}">{{ hour.hour }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
     <h5>Image: (Optional)</h5>
     <input type="file" name="file">
     <button class="btn btn-primary" type="submit">Book</button>

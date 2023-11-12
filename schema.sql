@@ -11,6 +11,12 @@ CREATE TABLE service (
     name TEXT NOT NULL,
     price NUMERIC NOT NULL
 );
+
+CREATE TABLE time (
+    weekday TEXT, 
+    hour TEXT
+);
+
 CREATE TABLE orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     user_id INTEGER,
@@ -19,5 +25,7 @@ CREATE TABLE orders (
     name TEXT,
     age TEXT,
     cash_spent NUMERIC,
+    weekday TEXT,
+    hour TEXT,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );

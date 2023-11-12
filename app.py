@@ -57,13 +57,16 @@ def order():
     service = db.execute("SELECT name, price FROM service")
     cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
     cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
+    weekday = db.execute("SELECT weekday FROM time")
+    hour = db.execute("SELECT hour FROM time")
     if request.method == "POST":
         # Get info from the form
         petname = request.form.get("petname")
         petage = request.form.get("petage")
         service_type = request.form.get("service")
         service_price = request.form.get("price")
-
+        day = request.form.get("day")
+        time = request.form.get("hour")
         # Remove the $ sign for the service price & convert the price to int
         if service_price:
             service_price = service_price.replace("$", "")
@@ -76,6 +79,15 @@ def order():
             return redirect("/order")
         elif petage.isnumeric() == False or int(petage) < 0:
             flash("Pet age must be greater than 0 and a number", "error")
+            return redirect("/order")
+        elif not service_type:
+            flash("Service must not be empty")
+            return redirect("/order")
+        elif not day:
+            flash("A day must be selected")
+            return redirect("/order")
+        elif not time:
+            flash("A time must be selected")
             return redirect("/order")
         elif cash < service_price:
             flash("Your balance is not enough, please add more", "error")
@@ -98,7 +110,7 @@ def order():
                     flash("Successful", "success")
                     # Update the cash after payment #
                     cash = cash - service_price
-                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path, cash_spent) VALUES (?, ?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'images/user_img/' + uploaded_file.filename, service_price)
+                    db.execute("INSERT INTO orders (name, age, service, user_id, image_path, cash_spent, weekday, hour) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], 'images/user_img/' + uploaded_file.filename, service_price, day, time)
                     # Update the cash after payment #
                     db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                     return redirect("/order")
@@ -110,12 +122,12 @@ def order():
                 # Update the cash after payment #
                 cash = cash - service_price
 
-                db.execute("INSERT INTO orders (name, age, service, user_id, cash_spent) VALUES (?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], service_price)
+                db.execute("INSERT INTO orders (name, age, service, user_id, cash_spent, weekday, hour) VALUES (?, ?, ?, ?, ?, ?, ?)", petname, petage, service_type, session["user_id"], service_price, day, time)
                 
                 # Update the cash after payment #
                 db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                 return redirect("/order")
-    return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service)
+    return render_template("order.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', service=service, weekday=weekday, hour=hour)
 
 @app.route("/edit/<int:orderID>", methods=["GET", "POST"])
 @login_required
@@ -124,6 +136,7 @@ def edit(orderID):
     service = db.execute("SELECT name, price FROM service")
     cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
     cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
+    weekday = db.execute("SELECT weekday FROM time")
     if request.method == "POST":
         # Get info from the form
         petname = request.form.get("petname")
@@ -190,7 +203,7 @@ def edit(orderID):
                 # Update the cash after payment #
                 db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                 return redirect(url_for('edit', orderID=orderID))
-    return render_template("edit.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', order=order, service=service)
+    return render_template("edit.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', order=order, service=service, weekday=weekday)
 
 @app.route("/history")
 @login_required
