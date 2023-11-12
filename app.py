@@ -57,8 +57,8 @@ def order():
     service = db.execute("SELECT name, price FROM service")
     cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
     cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
-    weekday = db.execute("SELECT weekday FROM time")
-    hour = db.execute("SELECT hour FROM time")
+    weekday = db.execute("SELECT * FROM weekday")
+    hour = db.execute("SELECT * FROM time")
     if request.method == "POST":
         # Get info from the form
         petname = request.form.get("petname")
@@ -81,13 +81,13 @@ def order():
             flash("Pet age must be greater than 0 and a number", "error")
             return redirect("/order")
         elif not service_type:
-            flash("Service must not be empty")
+            flash("Service must be selected", "error")
             return redirect("/order")
         elif not day:
-            flash("A day must be selected")
+            flash("A day must be selected", "error")
             return redirect("/order")
         elif not time:
-            flash("A time must be selected")
+            flash("A time must be selected", "error")
             return redirect("/order")
         elif cash < service_price:
             flash("Your balance is not enough, please add more", "error")
@@ -136,13 +136,16 @@ def edit(orderID):
     service = db.execute("SELECT name, price FROM service")
     cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
     cash = cash[0]["cash"] # Get the cash's current value, because db.execute return a list of dict
-    weekday = db.execute("SELECT weekday FROM time")
+    weekday = db.execute("SELECT * FROM weekday")
+    hour = db.execute("SELECT * FROM time")
     if request.method == "POST":
         # Get info from the form
         petname = request.form.get("petname")
         petage = request.form.get("petage")
         service_type = request.form.get("service")
         service_price = request.form.get("price")
+        day = request.form.get("day")
+        time = request.form.get("hour")
         cash_spent = db.execute("SELECT cash_spent FROM orders WHERE id = ?", orderID)
         cash_spent = cash_spent[0]["cash_spent"]
         cash_spent = float(cash_spent)
@@ -150,15 +153,14 @@ def edit(orderID):
         if service_price:
             service_price = service_price.replace("$", "")
             service_price = float(service_price)
-        if cash_spent == service_price:
+        if cash_spent != service_price:
             cash_spent = service_price
-        elif cash_spent > service_price:
-            cash_spent = cash_spent - service_price
-            cash = cash + cash_spent
-        elif cash_spent < service_price:
-            cash_spent = service_price - cash_spent
-            cash = cash - cash_spent
-        total_cash = cash_spent + service_price    
+        if cash_spent > cash:
+            flash("Your balance is not enough, please add more", "error")
+            return redirect(url_for('edit', orderID=orderID))
+        else:
+            cash = cash - (cash_spent - cash_spent)
+            db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"]) 
         if not petname:
             flash("Pet name cannot be empty!", "error")
             return redirect(url_for('edit', orderID=orderID))
@@ -167,9 +169,6 @@ def edit(orderID):
             return redirect(url_for('edit', orderID=orderID))
         elif petage.isnumeric() == False or int(petage) < 0:
             flash("Pet age must be greater than 0 and a number", "error")
-            return redirect(url_for('edit', orderID=orderID))
-        elif total_cash < service_price:
-            flash("Your balance is not enough, please add more", "error")
             return redirect(url_for('edit', orderID=orderID))
         else:
             uploaded_file = request.files.get("file")
@@ -187,23 +186,20 @@ def edit(orderID):
 
                     uploaded_file.save(file_path)
                     flash("Successful", "success")
+                    db.execute("UPDATE orders SET name = ?, age = ?, service = ?, image_path = ?, cash_spent = ?, weekday = ?, hour = ? WHERE user_id = ? AND id = ?", petname, petage, service_type,'images/user_img/' + uploaded_file.filename, service_price, day, time, session["user_id"], orderID)
                     # Update the cash after payment #
-                    db.execute("UPDATE orders SET name = ?, age = ?, service = ?, image_path = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type,'images/user_img/' + uploaded_file.filename, service_price, session["user_id"], orderID)
-                    # Update the cash after payment #
-                    db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                     return redirect(url_for('edit', orderID=orderID))
                 else:
                     flash('Invalid file type! Please upload an image file', "error")
                     return redirect(url_for('edit', orderID=orderID))
             else:
                 flash("Successful", "success")
-                # Update the cash after payment #
-                db.execute("UPDATE orders SET name = ?, age = ?, service = ?, cash_spent = ? WHERE user_id = ? AND id = ?", petname, petage, service_type, service_price, session["user_id"], orderID)
+            
+                db.execute("UPDATE orders SET name = ?, age = ?, service = ?, cash_spent = ?, weekday = ?, hour = ? WHERE user_id = ? AND id = ?", petname, petage, service_type, service_price, day, time, session["user_id"], orderID)
                 
                 # Update the cash after payment #
-                db.execute("UPDATE users SET cash = ? WHERE id = ?", cash, session["user_id"])
                 return redirect(url_for('edit', orderID=orderID))
-    return render_template("edit.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', order=order, service=service, weekday=weekday)
+    return render_template("edit.html", navbar_style='navbar-alt', navbar_brand_style='navbar-brand-alt', nav_link_style='nav-link-alt', order=order, service=service, weekday=weekday, hour=hour)
 
 @app.route("/history")
 @login_required

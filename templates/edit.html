@@ -45,10 +45,10 @@
         <option value="choose" selected disabled>Select a day</option>
         <!-- Get the service name -->
         {% for day in weekday %}
-            {% if day.weekday != None and day.weekday != order.weekday %}
-                <option value="{{ day.weekday }}">{{ day.weekday }}</option>
+            {% if day.day != order.weekday %}
+                <option value="{{ day.day }}">{{ day.day }}</option>
             {% else %}
-            <option value="{{ order.weekday }}" selected>{{ order.weekday }}</option>
+                <option value="{{ day.day }}" selected>{{ order.weekday }}</option>
             {% endif %}
         {% endfor %}
     </select>
@@ -59,8 +59,10 @@
         <option value="choose" selected disabled>Select a time</option>
         <!-- Get the service name -->
         {% for hour in hour %}
-            {% if hour.hour != None %}
+            {% if hour.hour != order.hour %}
                 <option value="{{ hour.hour }}">{{ hour.hour }}</option>
+            {% else %}
+                <option value="{{ order.hour }}" selected>{{ order.hour }}</option>
             {% endif %}
         {% endfor %}
     </select>

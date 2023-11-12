@@ -12,8 +12,11 @@ CREATE TABLE service (
     price NUMERIC NOT NULL
 );
 
+CREATE TABLE weekday (
+    day TEXT
+)
+
 CREATE TABLE time (
-    weekday TEXT, 
     hour TEXT
 );
 
