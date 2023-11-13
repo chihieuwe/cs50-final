@@ -21,23 +21,12 @@
         <input id="petage" autofocus class="form-control mx-auto w-auto" autocomplete="off" name="petage" value="{{ order.age }}" type="text">
     </div>
     
-    <label for="service">Choose a service:</label>
+    <label for="service">Service:</label>
    
-    <select id="service" name="service">
-        <option value="choose" disabled>Select a service</option>
-        <!-- Get the service name -->
-        {% for ser in service %}
-            <!-- If the service is not the same in order table, then display all the service as usual -->
-            {% if order.service != ser.name %}
-                <option value="{{ ser.name }}" data-price="{{ ser.price | usd }}">{{ ser.name }}</option>
-            {% else %}
-            <!-- Else select the service that is already in the table -->
-            <option value="{{ order.service }}" data-price="{{ ser.price | usd }}" selected>{{ order.service }}</option>
-            {% endif %}
-        {% endfor %}
-    </select>
-    <p id="price"></p>
-    <input type="hidden" id="hiddenPrice" name="price">
+    <h5 id="service" name="service">
+            <p value="{{ order.service }}">{{ order.service }}</p>
+    </h5>
+    <p>Price: {{ order.cash_spent | usd }}</p>
 
     <label for="day">Choose a date:</label>
 
@@ -72,9 +61,11 @@
     <input type="file" name="file" value="{{ order.image_path }}">
     <br>
     {% if order.image_path %}
-      <img src="{{ url_for('static', filename=order.image_path) }}" alt="Image" width="30%" height="30%">
+        <img src="{{ url_for('static', filename=order.image_path) }}" alt="Image" width="30%" height="30%">
     {% endif %}
     <button class="btn btn-primary" type="submit">Edit</button>
 </form>
+<br>
+<br>
 {% endfor %}
 {% endblock %}

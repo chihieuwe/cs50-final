@@ -178,3 +178,7 @@ table, th, td {
     top: 0;
     left: 0;
 }
+
+#service {
+    font-weight: bold;
+}
