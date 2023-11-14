@@ -14,7 +14,7 @@ CREATE TABLE service (
 
 CREATE TABLE weekday (
     day TEXT
-)
+);
 
 CREATE TABLE time (
     hour TEXT
