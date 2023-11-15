@@ -32,8 +32,8 @@ The website was implemented similarly to 'Finance' problem set in cs50: form val
 7. Run `cd cs50-final` to go to the directory. 
 8. Run `flask run` to get the project up and running. 
 
-[!IMPORTANT]
->Please refer to [this video](https://www.youtube.com/watch?v=9yzQCgIdL-Y&t=1354s) if you have trouble installing these tools or running my project locally
+> [!IMPORTANT]
+> Please refer to [this video](https://www.youtube.com/watch?v=9yzQCgIdL-Y&t=1354s) if you have trouble installing these tools or running my project locally
 
 
 
@@ -47,7 +47,7 @@ The website was implemented similarly to 'Finance' problem set in cs50: form val
 * To view your order, go to your profile and click 'order history'. 
 * In order history, you can also edit and cancel your appointment. 
 
-[!NOTE]
->If you have any feedback, write me an email via [chihieuwe12@gmail.com](chihieuwe12@gmail.com). 
+> [!NOTE]
+> If you have any feedback, write me an email via [chihieuwe12@gmail.com](chihieuwe12@gmail.com). 
 
 Thank you for checking this out :blush:
