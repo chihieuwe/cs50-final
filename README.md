@@ -1,14 +1,17 @@
 # cs50-final
-#### Video Demo:
+#### Video Demo: https://youtu.be/XxiHwwSB25Q
 #### Description
+
 This is CS50 
 Neko (_Neko is my cat's name_) Pet Clinic, a website for vet reservation of your pet.
 
-The intended purpose of this website is for vet reservation, you can make an appointment with your veterinarian online in advance instead of just calling. Furthermore, you can track and edit your pet's information in case you made a mistake on your reservation.  
+The intended purpose of this website is for vet reservation, you can make an appointment with your veterinarian online in advance instead of just calling. Furthermore, you can track and edit your pet's information in case you made a mistake on your reservation, you are able to cancel your reservation as well.  
 
 ### Languages and resources used:
+
 * [HTML](https://www.w3schools.com/html/)
 * [CSS](https://www.w3schools.com/css/default.asp)
+* [Bootstrap](https://getbootstrap.com/)
 * [JS](https://www.w3schools.com/js/default.asp)
 * [jQuery](https://www.w3schools.com/jquery/default.asp)
 * [Flask](https://flask.palletsprojects.com/en/2.3.x/)
@@ -22,18 +25,11 @@ The website was implemented similarly to 'Finance' problem set in cs50: form val
 
 
 ### Install and run locally (Skipped this part if you had the dependencies and text editor installed already): 
-1. [Install Ubuntu](https://ubuntu.com/engage/vmware-migration-scenarios?utm_source=takeover&utm_campaign=7018e000000LuwMAAS). 
-2. [Install Git](https://git-scm.com/download/win). 
-3. [Install VS Code](https://code.visualstudio.com/download). 
-4. [Install Python](https://www.python.org/downloads/windows/).
-5. Open the terminal in VS Code.
-5. Run command `git clone https://github.com/chihieuwe/cs50-final.git`to clone my project to your computer. 
-6. Run command `pip install -r requirements.txt` to install all the needed dependencies. 
-7. Run `cd cs50-final` to go to the directory. 
-8. Run `flask run` to get the project up and running. 
 
+I was unable to write instructions on how to install locally at this time (because pip install -r requirements.txt did not work). For future projects, I will take time to look into AWS or other cloud platforms to showcase the result. 
+Run `git clone https://github.com/chihieuwe/cs50-final.git` to clone this project to your computer.
 > [!IMPORTANT]
-> Please refer to [this video](https://www.youtube.com/watch?v=9yzQCgIdL-Y&t=1354s) if you have trouble installing these tools or running my project locally
+> Please refer to [this video](https://www.youtube.com/watch?v=9yzQCgIdL-Y&t=1354s) on to run this project locally. All credits belong to &copy; Carter Zenke.   
 
 
 
@@ -41,13 +37,14 @@ The website was implemented similarly to 'Finance' problem set in cs50: form val
 
 * Go to register page and create an account. 
 * Login using that account. 
-* Click *order* on the navbar. 
-* Fill in information about your pet. 
-* Click *Book*.
-* To view your order, go to your profile and click 'order history'. 
-* In order history, you can also edit and cancel your appointment. 
-
+* Select *Book* on the navbar. 
+* Fill in information about your pet. (Image is optional)
+* Click *Book* , a message will appear informing you that you have successfully book an appointment.
+* To view your appointments, go to your profile (your name on the navbar) and click 'Your appointments', a table with your appointments will appear. 
+* You can choose to edit or cancel your appointments. 
+  - If you choose to edit, a form will appear with your previous information, simply change the information you need and click edit. 
+  - Otherwise when you cancel your appointment, you will get a refund of the cash you paid for the service price. 
 > [!NOTE]
-> If you have any feedback, write me an email via [chihieuwe12@gmail.com](chihieuwe12@gmail.com). 
-
+> If you have any feedback, write me an email via [chihieuwe12@gmail.com]. 
+ 
 Thank you for checking this out :blush:

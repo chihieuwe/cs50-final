@@ -237,7 +237,7 @@ def profile():
                 return redirect("/profile")
             else:
                 flash("Saved", 'success')
-                db.execute("UPDATE users SET name = ?, hash = ?", name, generate_password_hash(password))
+                db.execute("UPDATE users SET name = ?, hash = ? WHERE id = ?", name, generate_password_hash(password), session["user_id"])
                 newName = db.execute("SELECT name FROM users WHERE id = ?", session["user_id"])
                 newName = newName[0]["name"]
                 session["username"] = newName
